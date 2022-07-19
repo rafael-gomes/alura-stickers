@@ -11,5 +11,6 @@ No primeiro momento, serão consumidas algumas APIs do [IMDB](https://imdb-api.c
 O workspace contém duas pastas, sendo:
 - `src`: contém os códigos do projeto
 - `lib`: contém as dependências do projeto
+- `assets/stickers`: contém os stickers gerados na aplicação
 
 A saída compilada será gerada na pasta `bin` por padrão. Essa pasta não é versionada no projeto.
