@@ -1,10 +1,5 @@
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
 import java.util.Map;
 
@@ -23,28 +18,29 @@ public class App {
             https://api.mocki.io/v2/549a5d8b/Top250TVs
          */
         String url = "https://api.mocki.io/v2/549a5d8b/Top250Movies";
-        URI endereco = URI.create(url);
-        var client = HttpClient.newHttpClient();
-        var request = HttpRequest.newBuilder(endereco).GET().build();
-        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+        ExtratorDeConteudo extrator = new ExtratorDeConteudoDoIMDB();
 
-        String body = response.body();
+        // API Nasa
+        //String url = "https://api.nasa.gov/planetary/apod?api_key=o1vdnwDbBCSDkToNXXBnzWjgNCR3dVdgThwl0XOP&start_date=2022-06-12&end_date=2022-06-14";
+        //ExtratorDeConteudo extrator = new ExtratorDeConteudoDaNasa();
 
-        var parser = new JsonParser();
-        List<Map<String, String>> listaDeFilmes = parser.parse(body);
+        var http = new ClienteHttp();
+        String json = http.buscaDados(url);
+
+        List<Conteudo> conteudos = extrator.extraiConteudos(json);
         
         var generate = new StickersGenerator();
-        for (Map<String,String> filme : listaDeFilmes) {
-            String urlImagem = filme.get("image")
-                .replaceAll("(@+)(.*).jpg$", "$1.jpg");
-            String titulo = filme.get("title");
+        
+        for (int i = 0; i < conteudos.size(); i ++) {
 
-            InputStream inputStream = new URL(urlImagem).openStream();
-            String nomeArquivo = titulo + ".png";
+            Conteudo conteudo = conteudos.get(i);
 
-            generate.cria(inputStream, nomeArquivo, titulo);
+            InputStream inputStream = new URL(conteudo.getUrlImagem()).openStream();
+            String nomeArquivo = conteudo.getTitulo() + ".png";
 
-            System.out.println(filme.get("title"));
+            generate.cria(inputStream, nomeArquivo, conteudo.getTitulo());
+
+            System.out.println(conteudo.getTitulo());
             /*
             if ( Float.parseFloat(filme.get("imDbRating")) <= 5 ) {
                 System.out.println("\uD83C\uDF45 " + filme.get("imDbRating"));
