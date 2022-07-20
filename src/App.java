@@ -35,7 +35,8 @@ public class App {
         
         var generate = new StickersGenerator();
         for (Map<String,String> filme : listaDeFilmes) {
-            String urlImagem = filme.get("image");
+            String urlImagem = filme.get("image")
+                .replaceAll("(@+)(.*).jpg$", "$1.jpg");
             String titulo = filme.get("title");
 
             InputStream inputStream = new URL(urlImagem).openStream();
