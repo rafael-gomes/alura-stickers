@@ -16,12 +16,16 @@ public class App {
             https://api.mocki.io/v2/549a5d8b/MostPopularTVs
             https://api.mocki.io/v2/549a5d8b/Top250TVs
          */
-        String url = "https://api.mocki.io/v2/549a5d8b/Top250Movies";
-        ExtratorDeConteudo extrator = new ExtratorDeConteudoDoIMDB();
+        //String url = "https://api.mocki.io/v2/549a5d8b/Top250Movies";
+        //ExtratorDeConteudo extrator = new ExtratorDeConteudoDoIMDB();
 
         // API Nasa
         //String url = "https://api.nasa.gov/planetary/apod?api_key=o1vdnwDbBCSDkToNXXBnzWjgNCR3dVdgThwl0XOP&start_date=2022-06-12&end_date=2022-06-14";
         //ExtratorDeConteudo extrator = new ExtratorDeConteudoDaNasa();
+        
+        // API Linguagens
+        String url = "https://rafaeldev-linguagens-api.herokuapp.com/linguagens";
+        ExtratorDeConteudo extrator = new ExtratorDeConteudoDeLinguagens();
 
         var http = new ClienteHttp();
         String json = http.buscaDados(url);
